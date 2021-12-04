@@ -16,30 +16,38 @@ export const FUNCTION_MEDIA_SHARE = 'media_share';
 export const COMMAND_TYPE_START = 'start';
 export const COMMAND_TYPE_START_CONFIRM = 'start_confirm';
 
+export const COMMAND_TYPE_CONFIG = 'config';
+export const COMMAND_TYPE_CONFIG_CONFIRM = 'config_confirm';
+
+
 export interface ControlEvent<T> {
     type: string;
     payload: T;
 }
 
-export interface StartPayload {
-    isVertical: boolean,
+export interface ConfigPayload {
     touch?: {
-        enabled: boolean,
         aspectRatio: number,
     }
     gamepad?: {
-        enabled: boolean,
+        buttons: number,
     }
     gyroscope?: {
-        enabled: boolean,
+        ok: boolean,
     }
     gyroscope_gamepad?: {
-        enabled: boolean,
+        ok: boolean,
     }
     move?: {
-        enabled: boolean,
+        ok: boolean,
     }
     media_share?: {
-        enabled: boolean,
+        ok: boolean,
     }
 }
+
+export interface StartPayload {
+    isVertical: boolean,
+    functions: string[]
+}
+
