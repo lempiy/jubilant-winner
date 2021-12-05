@@ -1,0 +1,12 @@
+{
+"companyName": "Futuristic Racing 3D",
+"productName": "Futuristic Racing 3D",
+"dataUrl": "futuristic_racing_3d-v2.data.unityweb",
+"wasmCodeUrl": "futuristic_racing_3d-v2.wasm.code.unityweb",
+"wasmFrameworkUrl": "futuristic_racing_3d-v2.wasm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}

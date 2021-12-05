@@ -43,7 +43,7 @@ export interface ConfigPayload {
         ok: boolean,
     }
     media_share?: {
-        ok: boolean,
+        type: string,
     }
 }
 

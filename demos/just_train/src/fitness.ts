@@ -19,7 +19,7 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
   window.document.body.style.backgroundColor = '#333';
 
   const app = new PIXI.Application({ antialias: true, backgroundAlpha: 0 });
-  const data = await loadTutorPoses('/assets/final.json');
+  const data = await loadTutorPoses('/demos/just_train/assets/final.json');
   const size = app.view.width * .25;
   const vm = new FitnessViewModel({
     animationIntervalSec: 0.75,
