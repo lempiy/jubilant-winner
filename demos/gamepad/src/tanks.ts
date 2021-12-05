@@ -15,7 +15,7 @@ export function tanks(slowbro: Slowbro, host: HTMLElement) {
     >
       <iframe
         id="game-iframe"
-        src="/tanks"
+        src="tanks/"
         style="border: 0; width: 100%; height: 100%; position: absolute"
         >Your browser doesn't support iFrames.</iframe
       >
