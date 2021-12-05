@@ -80,7 +80,6 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
           ok: true,
         }
       })
-      window.document.body.requestFullscreen()
       drawApp(isTwoPlayers, app, vm, video, host);
     });
   });
