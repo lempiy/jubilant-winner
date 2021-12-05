@@ -5,7 +5,8 @@ import {
     EVENT_TYPE_RESOLUTION_JOYSTICK_CHANGE,
     EVENT_TYPE_RESOLUTION_PAD_BUTTON_TAP,
     EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE,
-    EVENT_TYPE_SHARE_MEDIA_DATA,
+    EVENT_TYPE_SHARE_MEDIA_DATA, 
+    EVENT_TYPE_MOVE_DATA
 } from "./events"
 
 
@@ -17,6 +18,7 @@ export class Device {
     [EVENT_TYPE_RESOLUTION_JOYSTICK_CHANGE]:((degree: number, distance: number)=>void)[] = [];
     [EVENT_TYPE_RESOLUTION_PAD_BUTTON_TAP]:((index: number, gesture: number)=>void)[] = [];
     [EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE]:((azimuth: number, patch: number, roll: number)=>void)[] = [];
+    [EVENT_TYPE_MOVE_DATA]:((keypoint: Float32Array)=>void)[] = [];
 
     constructor(private link: Link) {
         this._sub = this.link.listenBinary((buff) => {
@@ -138,6 +140,18 @@ export class Device {
         this[EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE].forEach((cb) => cb(azimuth, pitch, roll));
     }
 
+    onMoveChange(cb: (keypoint: Float32Array)=>void): () => void {
+        this[EVENT_TYPE_MOVE_DATA].push(cb);
+        return () => {
+            this[EVENT_TYPE_MOVE_DATA] = this[EVENT_TYPE_MOVE_DATA].filter((v) => v != cb);
+        }
+    }
+
+    private _onMoveChange(buffer: ArrayBuffer) {
+        const arr = new Float32Array(buffer.slice(2));
+        this[EVENT_TYPE_MOVE_DATA].forEach((cb) => cb(arr));
+    }
+
     onGyroscopeChange(cb: (azimuth: number, pitch: number, roll: number)=>void): () => void {
         this[EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE].push(cb);
         return () => {
@@ -167,6 +181,8 @@ export class Device {
             return this._onPadButtonTap(view);
           case EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE:
             return this._onGyroscopeChange(view);
+        case EVENT_TYPE_MOVE_DATA:
+            return this._onMoveChange(buffer);
           default:
             console.warn("unknown event received");
         }

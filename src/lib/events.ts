@@ -5,6 +5,7 @@ export const EVENT_TYPE_RESOLUTION_JOYSTICK_CHANGE = 3;
 export const EVENT_TYPE_RESOLUTION_PAD_BUTTON_TAP = 4;
 export const EVENT_TYPE_RESOLUTION_GYROSCOPE_CHANGE = 5;
 export const EVENT_TYPE_SHARE_MEDIA_DATA = 6;
+export const EVENT_TYPE_MOVE_DATA = 7;
 
 export const FUNCTION_TOUCH = 'touch';
 export const FUNCTION_GAMEPAD = 'gamepad';
