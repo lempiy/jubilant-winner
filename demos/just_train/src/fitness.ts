@@ -61,7 +61,7 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
     device.onTouchTap
   })
 
-  const hls = new window.Hls({ autoStartLoad: true });
+  const hls = new window.Hls({ autoStartLoad: true, enableWorker: false, maxBufferLength: 15, maxBufferSize: 30 * 1000 * 1000 });
   hls.loadSource(videoSrc);
   hls.loadLevel = 5;
   hls.attachMedia(video);
