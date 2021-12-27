@@ -10,7 +10,7 @@ declare global {
 }
 
 const THRESHOLD = 0.3;
-const videoSrc = 'https://meta.vcdn.biz/dbb80511ee8764b79851442578667ad5_combi603fb633c15830b2c2a8d0a1/vod/hls/u/5531/o/133625301/playlist.m3u8';
+const videoSrc = 'https://meta.vcdn.biz/b8a99c92b7f0915d7eff03db6e53b382_combi603fb633c15830b2c2a8d0a1/vod/hls/u/5531/o/135002291/playlist.m3u8';
 
 export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlayers: boolean) {
   document.body.style.overflow = 'hidden';
@@ -72,15 +72,21 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
       console.log(
         'manifest loaded, found ' + data.levels.length + ' quality level'
       );
+      try {
+        console.log('send reply +', slowbro);
       const reply = await slowbro.setConfig({
-        touch: {
-          aspectRatio: host.clientHeight / host.clientWidth,
-        },
-        move: {
-          ok: true,
-        }
-      })
-      drawApp(isTwoPlayers, app, vm, video, host);
+          touch: {
+            aspectRatio: host.clientHeight / host.clientWidth,
+          },
+          move: {
+            ok: true,
+          }
+        })
+        console.log('sent reply');
+        drawApp(isTwoPlayers, app, vm, video, host);
+      } catch (e) {
+        console.error(e)
+      }
     });
   });
 
@@ -165,6 +171,7 @@ function drawApp(isTwoPlayers: boolean, app: PIXI.Application, vm: FitnessViewMo
     y: 0,
     threshold: THRESHOLD,
   });
+  console.log('drawing');
   playerOneFigure.color = 0xfc9003;
   const playerOneDataDiv = addUserOverlay(host, poseSize, padding, 0, "rgb(252, 144, 3, 0.5)");
 
