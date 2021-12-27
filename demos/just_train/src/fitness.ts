@@ -10,7 +10,7 @@ declare global {
 }
 
 const THRESHOLD = 0.3;
-const videoSrc = 'https://meta.vcdn.biz/dbb80511ee8764b79851442578667ad5_combi603fb633c15830b2c2a8d0a1/vod/hls/u/5531/o/133625301/playlist.m3u8';
+const videoSrc = 'https://meta.vcdn.biz/b8a99c92b7f0915d7eff03db6e53b382_combi603fb633c15830b2c2a8d0a1/vod/hls/u/5531/o/135002291/playlist.m3u8';
 
 export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlayers: boolean) {
   document.body.style.overflow = 'hidden';
