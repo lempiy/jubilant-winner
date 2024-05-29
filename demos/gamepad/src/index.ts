@@ -34,7 +34,7 @@ async function run() {
   s.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
   document.body.appendChild(s);
   console.log("waiting answer...");
-  const slowbro = new Slowbro(TransportType.webrtc, "https://rocky-gorge-69260.herokuapp.com/");
+  const slowbro = new Slowbro(TransportType.webrtc, "https://slowbro-signal-240f8ce4c14f.herokuapp.com/");
   await Promise.all(ids.map(sid => slowbro.awaitLink(sid)))
   const replies = await slowbro.startCheck({
     isVertical: false,
