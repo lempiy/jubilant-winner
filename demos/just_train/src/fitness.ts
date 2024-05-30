@@ -11,6 +11,7 @@ declare global {
 
 const THRESHOLD = 0.3;
 const videoSrc = 'https://meta.vcdn.biz/b8a99c92b7f0915d7eff03db6e53b382_combi603fb633c15830b2c2a8d0a1/vod/hls/u/5531/o/135002291/playlist.m3u8';
+const video = document.createElement('video');
 
 export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlayers: boolean) {
   document.body.style.overflow = 'hidden';
@@ -36,7 +37,7 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
     })
   })
   app.resizeTo = host;
-  const video = document.createElement('video');
+
   video.style.position = 'absolute';
   video.style.zIndex = '-2';
   video.style.left = "50%";
@@ -54,7 +55,7 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
   video.onplaying = () => {
 
   }
-  video.muted = false;
+  video.muted = true;
 
   players.forEach((p) => {
     const device = slowbro.devices[p];
@@ -89,6 +90,8 @@ export async function fitness(slowbro: Slowbro, host: HTMLDivElement, isTwoPlaye
   }
 }
 
+
+
 async function loadTutorPoses(url: string): Promise<[number, number, number][][]> {
   const response = await fetch(url)
   const body: [number, number, number][][] = await response.json();
@@ -113,6 +116,61 @@ function addTutorOverlay(host: HTMLDivElement, size: number, x: number, y: numbe
 function addUserOverlay(host: HTMLDivElement, size: number, x: number, y: number, color: string): HTMLDivElement {
   const overlay = document.createElement('div');
   const dataDiv = document.createElement('div');
+  const soundDiv = document.createElement('div');
+  const style = document.createElement('style');
+  style.innerText = `
+  .soundDiv:hover {
+    text-shadow: #FC0 1px 0 10px;
+  }
+  .soundDiv:focus {
+    text-shadow: #FC0 1px 0 10px;
+  }
+  @keyframes move {
+    0% {
+      transform: translate(-50%,-50%) scale(1.0);
+      -ms-transform: translate(-50%,-50%) scale(1.0);
+      -webkit-transform: translate(-50%,-50%) scale(1.0);
+      -o-transform: translate(-50%,-50%) scale(1.0);
+      -moz-transform: translate(-50%,-50%) scale(1.0);
+    }
+  
+    100% {
+      transform: translate(-50%,-50%) scale(1.3);
+      -ms-transform: translate(-50%,-50%) scale(1.3);
+      -webkit-transform: translate(-50%,-50%) scale(1.3);
+      -o-transform: translate(-50%,-50%) scale(1.3);
+      -moz-transform: translate(-50%,-50%) scale(1.3);
+    }
+  }
+  `
+  soundDiv.style.width = "100%";
+  soundDiv.style.height = "100%";
+  soundDiv.style.position = 'absolute';
+  soundDiv.style.top = '50%';
+  soundDiv.style.left = '50%';
+  soundDiv.style.transform = 'translate(-50%,-50%)';
+  soundDiv.style.display = 'flex';
+  soundDiv.style.justifyContent = 'center';
+  soundDiv.style.alignItems = 'center';
+  soundDiv.style.fontSize = '80px';
+  soundDiv.style.backgroundColor = 'rgba(200,200,200, 0.3)';
+  soundDiv.style.zIndex = '30';
+  soundDiv.style.cursor = 'pointer';
+  soundDiv.textContent = '🔇';
+  soundDiv.className = 'soundDiv';
+  soundDiv.style.animation = 'move 1s ease infinite alternate';
+  soundDiv.onclick = () => {
+    if (video.muted) {
+      soundDiv.style.visibility = 'hidden';
+      video.muted = false;
+      soundDiv.textContent = '🔇';
+    } else {
+      soundDiv.style.visibility = 'visible';
+      video.muted = true;
+      soundDiv.textContent = '🔈';
+    }
+  }
+
   overlay.style.position = 'relative';
   overlay.style.width = `${size}px`;
   overlay.style.height = `${size + size * .3}px`;
@@ -151,7 +209,9 @@ function addUserOverlay(host: HTMLDivElement, size: number, x: number, y: number
     </div>
   `
   overlay.appendChild(dataDiv);
+  host.appendChild(style);
   host.appendChild(overlay);
+  host.appendChild(soundDiv);
   return dataDiv;
 }
 
@@ -207,7 +267,9 @@ function drawApp(isTwoPlayers: boolean, app: PIXI.Application, vm: FitnessViewMo
   begin.style.zIndex = '3';
   begin.style.color = '#ffffff'
   begin.style.textShadow = '0 0 10px #333333';
-  begin.innerHTML = isTwoPlayers ? 'Щоб почати тренування обидва<br>станьте перед камерою' : 'Щоб почати тренування<br>станьте перед камерою';
+  begin.style.textAlign = 'center';
+  begin.style.paddingTop = '110px';
+  begin.innerHTML = isTwoPlayers ? 'Щоб почати тренування ввмікніть звук та<br>обидва станьте перед камерою' : 'Щоб почати тренування ввмікніть звук<br>та станьте перед камерою';
   host.appendChild(begin)
 
   addTutorOverlay(host, poseTutorSize, app.view.width - poseTutorSize * 1.5 - 20, app.view.height - poseTutorSize - 20);
